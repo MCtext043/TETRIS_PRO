@@ -80,15 +80,18 @@ def game_over():
     screen.fill(pygame.Color(222, 248, 116))
     game_over_text = font.render("Game Over", True, (255, 0, 0))
     score_text = font.render(f"Final Score: {score}", True, (255, 255, 255))
-    money = font.render(f"money +{money_earned}", True, (255, 255, 255))
+    money = font.render(f"Get money +{money_earned}", True, (255, 255, 255))
+    All_money = font.render(f"ALL money: {total_money+money_earned}", True, (255, 255, 255))
     screen.blit(game_over_text, (screen_x // 2 - game_over_text.get_width() // 2,
                                  screen_y // 2 - game_over_text.get_height()))
     screen.blit(score_text, (screen_x // 2 - score_text.get_width() // 2,
                              screen_y // 2 + game_over_text.get_height()))
-    screen.blit(money, (screen_x // 2 - money.get_width() // 2,
-                        screen_y // 2 + game_over_text.get_height() + 20))
     screen.blit(best_score_text, (screen_x // 2 - best_score_text.get_width() // 2,
-                        screen_y // 2 + game_over_text.get_height() + 40))
+                        screen_y // 2 + game_over_text.get_height() + 20))
+    screen.blit(All_money, (screen_x // 2 - All_money.get_width() // 2,
+                            screen_y // 2 + game_over_text.get_height() + 40))
+    screen.blit(money, (screen_x // 2 - money.get_width() // 2,
+                        screen_y // 2 + game_over_text.get_height() + 60))
     pygame.display.flip()
     pygame.time.wait(3000)
     pygame.quit()
