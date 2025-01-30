@@ -38,7 +38,23 @@ columns = 11
 strings = 21
 screen_x = 250
 screen_y = 500
-COLORS = ["White", "Black", "Red", "Yellow"]
+COLORS = [
+    (255, 99, 71),  # Tomato
+    (255, 140, 0),  # Dark Orange
+    (255, 215, 0),  # Gold
+    (34, 139, 34),  # Forest Green
+    (30, 144, 255),  # Dodger Blue
+    (75, 0, 130),  # Indigo
+    (238, 130, 238),  # Violet
+    (255, 20, 147),  # Deep Pink
+    (255, 182, 193),  # Light Pink
+    (173, 216, 230),  # Light Blue
+    (144, 238, 144),  # Light Green
+    (255, 105, 180),  # Hot Pink
+    (135, 206, 250),  # Light Sky Blue
+    (255, 160, 122),  # Light Salmon
+    (240, 128, 128),  # Light Coral
+]
 screen = pygame.display.set_mode((screen_x, screen_y))
 pygame.display.set_caption("Tetris CODE")
 clock = pygame.time.Clock()
