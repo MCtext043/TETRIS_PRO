@@ -75,19 +75,21 @@ rotate = False
 
 
 def game_over():
+    play_soundtrack("game-over.mp3")
     money_earned = score // 200 * 10
     update_record(score, money_earned)
     screen.fill(pygame.Color(222, 248, 116))
     game_over_text = font.render("Game Over", True, (255, 0, 0))
     score_text = font.render(f"Final Score: {score}", True, (255, 255, 255))
     money = font.render(f"Get money +{money_earned}", True, (255, 255, 255))
-    All_money = font.render(f"ALL money: {total_money+money_earned}", True, (255, 255, 255))
+    best_score, total_money = get_record()
+    All_money = font.render(f"ALL money: {total_money + money_earned}", True, (255, 255, 255))
     screen.blit(game_over_text, (screen_x // 2 - game_over_text.get_width() // 2,
                                  screen_y // 2 - game_over_text.get_height()))
     screen.blit(score_text, (screen_x // 2 - score_text.get_width() // 2,
                              screen_y // 2 + game_over_text.get_height()))
     screen.blit(best_score_text, (screen_x // 2 - best_score_text.get_width() // 2,
-                        screen_y // 2 + game_over_text.get_height() + 20))
+                                  screen_y // 2 + game_over_text.get_height() + 20))
     screen.blit(All_money, (screen_x // 2 - All_money.get_width() // 2,
                             screen_y // 2 + game_over_text.get_height() + 40))
     screen.blit(money, (screen_x // 2 - money.get_width() // 2,
@@ -98,6 +100,12 @@ def game_over():
     exit()
 
 
+def play_soundtrack(sound_file):
+    pygame.mixer.music.load(sound_file)
+    pygame.mixer.music.play(-1)
+
+
+play_soundtrack("sound_track.mp3")
 while game:
     delta_x = 0
     delta_y = 1
@@ -112,6 +120,7 @@ while game:
                 delta_x = 1
             elif event.key == pygame.K_UP:
                 rotate = True
+
     key = pygame.key.get_pressed()
     if key[pygame.K_DOWN]:
         count = 31 * fps
@@ -151,6 +160,9 @@ while game:
     for j in range(strings - 1, -1, -1):
         count_cells = sum(1 for i in range(columns) if grid[i][j][0] == 0)
         if count_cells == (columns - 1):
+            play_soundtrack("clear.mp3")
+            pygame.time.wait(1000)
+            play_soundtrack("sound_track.mp3")
             score += 100
             if score % 200 == 0:
                 LEVEL += 1
