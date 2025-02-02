@@ -56,7 +56,7 @@ COLORS = [
     (240, 128, 128),  # Light Coral
 ]
 screen = pygame.display.set_mode((screen_x, screen_y))
-pygame.display.set_caption("Tetris CODE")
+pygame.display.set_caption("Tetris PRO")
 clock = pygame.time.Clock()
 cell_x = screen_x / (columns - 1)
 cell_y = screen_y / (strings - 1)
@@ -88,6 +88,79 @@ det_choice = copy.deepcopy(random.choice(det))
 count = 0
 game = True
 rotate = False
+
+
+def pause_game():
+    paused = True
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    paused = False
+        screen.fill((0, 0, 0))
+        pause_text = font.render("Paused", True, (255, 255, 255))
+        text_rect = pause_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+        screen.blit(pause_text, text_rect)
+        pygame.display.flip()
+        pygame.time.Clock().tick(10)
+
+
+def choose_difficulty():
+    difficulties = {
+        "Easy": 30,
+        "Medium": 45,
+        "Hard": 60,
+        "Insane": 75,
+    }
+
+    # Button properties
+    button_color = (255, 255, 255)  # White
+    button_hover_color = (200, 200, 200)  # Light gray
+    button_text_color = (0, 0, 0)  # Black
+    button_width = 200
+    button_height = 50
+    button_margin = 20
+    buttons = []
+    y_pos = 100
+    for text, level in difficulties.items():
+        button_rect = pygame.Rect(
+            (screen.get_width() - button_width) // 2,
+            y_pos,
+            button_width,
+            button_height
+        )
+        button = {
+            "rect": button_rect,
+            "text": text,
+            "level": level,
+        }
+        buttons.append(button)
+        y_pos += button_height + button_margin
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return None  # Signal game quit
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for button in buttons:
+                        if button["rect"].collidepoint(event.pos):
+                            return button["level"]
+
+        screen.fill((0, 0, 0))
+        for button in buttons:
+            color = button_hover_color if button["rect"].collidepoint(pygame.mouse.get_pos()) else button_color
+            pygame.draw.rect(screen, color, button["rect"])
+            text_surface = font.render(button["text"], True, button_text_color)
+            text_rect = text_surface.get_rect(center=button["rect"].center)
+            screen.blit(text_surface, text_rect)
+
+        pygame.display.flip()
+        pygame.time.Clock().tick(30)
 
 
 def game_over():
@@ -130,12 +203,16 @@ while game:
         if event.type == pygame.QUIT:
             exit()
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_p:
+                pause_game()
+            elif event.key == pygame.K_LEFT:
                 delta_x = -1
             elif event.key == pygame.K_RIGHT:
                 delta_x = 1
             elif event.key == pygame.K_UP:
                 rotate = True
+            elif event.key == pygame.K_l:
+                fps = choose_difficulty()
 
     key = pygame.key.get_pressed()
     if key[pygame.K_DOWN]:
